@@ -17,37 +17,52 @@ product_dic = {
                'p5' : ['Sony A9 M2','https://www.georges.com.au/sony-alpha-a9-ii-mirrorless-digital-camera-body-only.html','https://www.digidirect.com.au/sony-alpha-a9-ii-body-only','https://www.teds.com.au/sony-a9-mark-2-body']
                }
 
-def parseGeorgesPrice(url):
-    r = requests.get(url)
-    soup = bs4.BeautifulSoup(r.text,"html")
-    price = soup.find_all('span',{'class':'price'})[0].text
-    return price
+#imply inheritance
 
-def parseDigiDirectPrice(url):
-    r = requests.get(url)
-    price_list = []
-    soup = bs4.BeautifulSoup(r.text,"html")
-    price = soup.find_all('div',{'class':'price-box price-final_price'})[0].find_all('span',{'class':'price'})
-    for x in price:
-        price_list.append(x.text)
-    return min(price_list)
+class ParsePrice:
+    def __init__(self,url):
+        self.url = url        
+        
+    def parsePrice(self):
+        r = requests.get(self.url)
+        soup = bs4.BeautifulSoup(r.text,"html")
+        price = soup.find_all('span',{'class':'price'})[0].text
+        return price
 
-def parseTedsPrice(url):
-    r = requests.get(url)
-    soup = bs4.BeautifulSoup(r.text,"html")
-    price = soup.find_all('div',{'class':'price-box'})[0].find('meta')['content']
-    price = str('$')+str(price)
-    return price
+class parseGeorgesPrice(ParsePrice):
+    def __init(self,url):
+        super().__init__(url)
+        
+    company = 'Georges'
+        
+class parseDigiDirectPrice(ParsePrice):
+    def __init(self,url):
+        super().__init__(url)
+    
+    def parsePrice(self):
+        r = requests.get(self.url)
+        price_list = []
+        soup = bs4.BeautifulSoup(r.text,"html")
+        price = soup.find_all('div',{'class':'price-box price-final_price'})[0].find_all('span',{'class':'price'})
+        for x in price:
+            price_list.append(x.text)
+        return min(price_list)
+    
+    company = 'DigiDirect'
 
-#def parseName():
-#    r = requests.get('https://www.georges.com.au/blackmagic-pocket-cinema-camera-6k.html')
-#    soup = bs4.BeautifulSoup(r.text,"html")
-#    product_name = soup.find_all('h1',{'class':'product-name'})[0].text
-#    return product_name
-
-#while True:
-#    print('the current price of ' + str(parseName()) + 'is: '+ str(parsePrice()))
-
+class parseTedsPrice(ParsePrice):
+    def __init(self,url):
+        super().__init__(url)
+    
+    def parsePrice(self):
+        r = requests.get(self.url)
+        soup = bs4.BeautifulSoup(r.text,"html")
+        price = soup.find_all('div',{'class':'price-box'})[0].find('meta')['content']
+        price = str('$')+str(price)
+        return price
+    
+    company = 'Teds'
+    
 price_dic={}
 
 for product in product_dic.values():
@@ -55,11 +70,14 @@ for product in product_dic.values():
     price_list=[]
     for x in range(1,4):
         if x == 1:
-            price_list.append(['Georges', parseGeorgesPrice(product[1])])
+            parser = parseGeorgesPrice(product[1])
+            price_list.append([parser.company, parser.parsePrice()])
         if x == 2:
-            price_list.append(['DigiDirect', parseDigiDirectPrice(product[2])])
+            parser = parseDigiDirectPrice(product[2])
+            price_list.append([parser.company, parser.parsePrice()])
         if x == 3:
-            price_list.append(['Teds', parseTedsPrice(product[3])])
+            parser = parseTedsPrice(product[3])
+            price_list.append([parser.company, parser.parsePrice()])
     price_dic[product_name] = price_list
     
 print(price_dic)
@@ -79,9 +97,10 @@ for item in price_dic.items():
     cheapest_dic[item[0]]=cheapest_price
     
 print(cheapest_dic)
-        
-        
-        
+
+#
+#Problems:
+#    1. Trim the data from string to float (data from Teds is different from other website)
         
         
         
