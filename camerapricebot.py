@@ -47,9 +47,9 @@ class ParsePrice:
         r = requests.get(self.url)
         soup = bs4.BeautifulSoup(r.text,"html")
         price = soup.find_all('span',{'class':'price'})[0].text
-        return parseString(price)
+        return self.parseString(price)
     
-    def parseString(price_string):
+    def parseString(self, price_string):
         price_list = []
         price_float = ''
         
@@ -81,7 +81,7 @@ class parseDigiDirectPrice(ParsePrice):
         price = soup.find_all('div',{'class':'price-box price-final_price'})[0].find_all('span',{'class':'price'})
         for x in price:
             price_list.append(x.text)
-        return parseString(min(price_list))
+        return self.parseString(min(price_list))
     
     company = 'DigiDirect'
 
@@ -94,7 +94,7 @@ class parseTedsPrice(ParsePrice):
         soup = bs4.BeautifulSoup(r.text,"html")
         price = soup.find_all('div',{'class':'price-box'})[0].find('meta')['content']
         price = str('$')+str(price)
-        return parseString(price)
+        return self.parseString(price)
     
     company = 'Teds'
     
@@ -106,7 +106,7 @@ class parseCameraProPrice(ParsePrice):
         r = requests.get(self.url)
         soup = bs4.BeautifulSoup(r.text,"html")
         price = soup.find_all('span',{'data-price-type':'finalPrice'})[0].text
-        return parseString(price)
+        return self.parseString(price)
         
     company = 'CameraPro'
     
