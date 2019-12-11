@@ -2,9 +2,10 @@ from digidirect import parseDigiDirectPrice
 from georges import parseGeorgesPrice
 from teds import parseTedsPrice
 from camerapro import parseCameraProPrice
-from data import product_dic
 from file_handling import record_price
+from file_handling import get_url
 
+product_dic = get_url()
 price_dic={}
 
 for product in product_dic.values():
@@ -25,7 +26,7 @@ for product in product_dic.values():
             price_list.append([parser.company, parser.parsePrice()])
     price_dic[product_name] = price_list
     
-print(price_dic)
+# print(price_dic)
 
 #record the price_dic 
 record_price(price_dic)
@@ -48,4 +49,4 @@ for item in price_dic.items():
             cheapest_list = cheapest_shop + cheapest_price
     cheapest_dic[item[0]]=cheapest_list
     
-print(cheapest_dic)
+# print(cheapest_dic)
