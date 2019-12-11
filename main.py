@@ -3,6 +3,7 @@ from georges import parseGeorgesPrice
 from teds import parseTedsPrice
 from camerapro import parseCameraProPrice
 from data import product_dic
+from file_handling import record_price
 
 price_dic={}
 
@@ -25,6 +26,9 @@ for product in product_dic.values():
     price_dic[product_name] = price_list
     
 print(price_dic)
+
+#record the price_dic 
+record_price(price_dic)
 
 #find the cheapest price
     
