@@ -33,20 +33,20 @@ record_price(price_dic)
 
 #find the cheapest price
     
-cheapest_dic = {}
+# cheapest_dic = {}
 
-for key in price_dic.keys():
-    cheapest_dic[key] = ''
+# for key in price_dic.keys():
+#     cheapest_dic[key] = ''
 
-for item in price_dic.items():
-    cheapest_shop = [item[1][0][0]]
-    cheapest_price = [item[1][0][1]]
-    cheapest_list = cheapest_shop + cheapest_price
-    for x in item[1]:
-        if x[1] < cheapest_price[0]:
-            cheapest_price = [x[1]]
-            cheapest_shop = [x[0]]
-            cheapest_list = cheapest_shop + cheapest_price
-    cheapest_dic[item[0]]=cheapest_list
+# for item in price_dic.items():
+#     cheapest_shop = [item[1][0][0]]
+#     cheapest_price = [item[1][0][1]]
+#     cheapest_list = cheapest_shop + cheapest_price
+#     for x in item[1]:
+#         if x[1] < cheapest_price[0]:
+#             cheapest_price = [x[1]]
+#             cheapest_shop = [x[0]]
+#             cheapest_list = cheapest_shop + cheapest_price
+#     cheapest_dic[item[0]]=cheapest_list
     
 # print(cheapest_dic)

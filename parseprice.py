@@ -7,10 +7,13 @@ class ParsePrice:
         self.url = url        
         
     def parsePrice(self):
-        r = requests.get(self.url)
-        soup = bs4.BeautifulSoup(r.text,"html")
-        price = soup.find_all('span',{'class':'price'})[0].text
-        return self.parseString(price)
+        if len(self.url) != 0:
+            r = requests.get(self.url)
+            soup = bs4.BeautifulSoup(r.text,"lxml")
+            price = soup.find_all('span',{'class':'price'})[0].text
+            return self.parseString(price)
+        else:
+            return 0
     
     def parseString(self, price_string):
         price_list = []

@@ -11,6 +11,8 @@ def record_price(price_dic):
             if not has_header('price_data.csv'):
                 csv_writer.writeheader()
             if get_date('price_data.csv') != False:
+                #insert an empty line in the end
+                csv_writer.writerow({'Camera model': "",'Georges': "",'DigiDirect':"",'Teds': "",'CameraPro': ""})
                 csv_writer.writerow({'Date': get_date('price_data.csv')})
                 for model, price in price_dic.items():
                     csv_writer.writerow({'Camera model': model,
@@ -18,6 +20,8 @@ def record_price(price_dic):
                                         'DigiDirect':price[1][1],
                                         'Teds': price[2][1],
                                         'CameraPro': price[3][1]})
+
+
     except IOError:
         print("File not accessible")
 
