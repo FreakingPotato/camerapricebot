@@ -22,8 +22,8 @@ class ParsePrice:
         for x in price_string:
             if 48<= ord(x) <= 57:
                 price_list.append(x)
-        
-        price_list.insert(-2, '.')
+            elif ord(x) == 46:
+                price_list.append(x)
         
         for item in price_list:
             price_float += item
